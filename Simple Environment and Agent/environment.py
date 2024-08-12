@@ -1,4 +1,5 @@
 class Environment:
+    # Initialize the Environment's initial state here.
     def __init__(self):
         # Initialize the number of timestep that an agent can interact with environment.
         self.limit_of_steps = 10
