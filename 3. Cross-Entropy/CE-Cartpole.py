@@ -62,18 +62,20 @@ def iterate_batches(environment, net, batch_size):
     episode_steps = []
 
     episode_reward = 0.0
+
     current_observation = environment.reset()
-    current_observation = current_observation[0]
+    current_observation = current_observation[0]  # First element consists of the array we need. Others are type, etc.
+
     # The softmax function is often used as the last activation function of
     # a neural network to normalize the output of a network to a probability
     # distribution over predicted output classes.
     sm = nn.Softmax(dim=1)
     while True:
         # Turn observation into tensor in order to be able to feed it to NN.
-        obs_tensor = torch.FloatTensor([current_observation])
+        current_obs_tensor = torch.FloatTensor([current_observation])
 
         # First feed the observation to NN then turn the output to a prob dist and save it as tensor.
-        action_prob_tensor = sm(net(obs_tensor))
+        action_prob_tensor = sm(net(current_obs_tensor))
         action_probs = action_prob_tensor.data.numpy()[0]
 
         # 'p=action_probs' is the probabilities associated with each entry in 'len(action_probs)'.
@@ -104,6 +106,7 @@ def iterate_batches(environment, net, batch_size):
 
         current_observation = next_obs
 
+
 # DEFINE DECISION BOUNDARY AND THROW AWAY
 def filter_best_batches(batch, percentile):
     rewards = [s.reward for s in batch]
@@ -124,8 +127,10 @@ def filter_best_batches(batch, percentile):
     return train_obs_v, train_act_v, reward_boundary, reward_mean
 
 
+# Each batch consists of BATCH_SIZE episodes.
 BATCH_SIZE = 16
 PERCENTILE = 80
+# Continue till the Average reward in the batch is more than 199
 for iter_no, batch in enumerate(iterate_batches(env, agent, BATCH_SIZE)):
     obs_tensor, acts_tensor, reward_bound, reward_avg = filter_best_batches(batch, PERCENTILE)
     optimizer.zero_grad()
