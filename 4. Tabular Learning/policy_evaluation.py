@@ -24,7 +24,7 @@ transitions = {
 
 
 # Define a Random policy
-def base_policy(states):
+def random_policy(states):
     policy = {}
     for s in states:
         policy[s] = np.random.dirichlet(np.ones(env.action_space.n),size=1).tolist()
@@ -33,7 +33,7 @@ def base_policy(states):
 
 
 # Default Policy
-policy = base_policy(states)
+policy = random_policy(states)
 
 # Deterministic Always win policy
 #policy = {0: [0, 0, 1, 0], 1: [0, 1, 0, 0]}
