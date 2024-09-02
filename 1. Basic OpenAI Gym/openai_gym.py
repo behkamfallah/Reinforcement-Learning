@@ -1,7 +1,7 @@
 import gym
 
 # Agent will get reward of one until it hits ground.
-env = gym.make('CartPole-v0')
+env = gym.make('FrozenLake-v1')
 
 # We always need to reset the newly created env. Four floating-point numbers containing information about the
 # x coordinate of the stick's center of mass, its speed, its angle to the platform, and its angular speed.
